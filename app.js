@@ -1,25 +1,22 @@
-import {app,db,collection,addDoc,getDocs} from "./firebase.js";
-
-const formSubmit = document.getElementById("formSubmit")
-formSubmit.addEventListener("click", async () => {
-    const name = document.getElementById("name")
-    const lname = document.getElementById("lname")
-    const email = document.getElementById("email")
-    const contact = document.getElementById("contact")
-
-    console.log("name.value", name.value, lname.value, email.value, contact.value)
-    const userObj = {
-        name: name.value,
-        lastname: lname.value,
-        email: email.value,
-        contact: contact.value,
+import { app, db, collection, addDoc, getDocs } from "./firebase.js";
+const get = document.getElementById("formSubmit");
+get.addEventListener('click', async (stop) => {
+    stop.preventDefault()
+    const firstName = document.getElementById("firstname").value;
+    const lastName = document.getElementById("lastname").value;
+    const email = document.getElementById("useremail").value;
+    const contact = document.getElementById("userno").value;
+    try {
+        const docRef = await addDoc(collection(db, "user_information"), {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            contact: contact,
+        });
+        console.log("Document written with ID: ", docRef.id);
+        setTimeout(() => { window.location.reload() }, 100);
+        alert("Thank You For Your Time Your Information Is Received")
+    } catch (e) {
+        console.error("Error adding document: ", e);
     }
-
-
-    const userCollection = collection(db, "user")
-
-    const response = await addDoc(userCollection, userObj)
-    console.log(response, "response")
-
-})
-
+});
